@@ -199,15 +199,39 @@
  *
  *  @return <#return value description#>
  */
-- (SSLunarDate *)lunarDaysString:(NSDate *)date int:(int)nowIndex{
-
-    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+- (NSString *)lunarDaysString:(NSDate *)date int:(int)nowIndex{
     
-    //设置天数
-    [dateComponents setDay:nowIndex];
+    //对date进行操作获得希望对应的天数
+    NSCalendar *cal = [NSCalendar currentCalendar];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     
-    NSDate *newDate = [[NSCalendar currentCalendar] dateByAddingComponents:dateComponents toDate:date options:0];
-    SSLunarDate *lunar = [[SSLunarDate alloc] initWithDate:newDate];
-    return lunar;
+    NSDateComponents *comps = [cal
+                               components:NSYearCalendarUnit | NSMonthCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit
+                               fromDate:date];
+    comps.day = nowIndex;
+    NSDate *newDate = [cal dateFromComponents:comps];
+    
+    //开始计算农历，在网上找到的一种方法,试了很多次计算都是准确的
+    
+    NSArray *chineseDays=[NSArray arrayWithObjects:
+                          @"初一", @"初二", @"初三", @"初四", @"初五", @"初六", @"初七", @"初八", @"初九", @"初十",
+                          @"十一", @"十二", @"十三", @"十四", @"十五", @"十六", @"十七", @"十八", @"十九", @"二十",
+                          @"廿一", @"廿二", @"廿三", @"廿四", @"廿五", @"廿六", @"廿七", @"廿八", @"廿九", @"三十",  nil];
+    
+    
+    NSCalendar *localeCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSChineseCalendar];
+    
+    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+    
+#pragma clang diagnostic pop
+    
+    NSDateComponents *localeComp = [localeCalendar components:unitFlags fromDate:newDate];
+    
+    NSString *d_str = [chineseDays objectAtIndex:localeComp.day-1];
+    
+    NSString *chineseCal_str =[NSString stringWithFormat: @"%@",d_str];
+    
+    return chineseCal_str;
 }
 @end

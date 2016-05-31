@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SSLunarDate.h"
 @interface NSObject (CalenderSet)
 - (NSInteger)currentYear:(NSDate *)date;//获得当前的年份
 - (NSInteger)currentMonth:(NSDate *)date;//获得当前的月份
@@ -19,5 +18,5 @@
 - (NSInteger)currentFirstDay:(NSDate *)date;//获得这个月份第一天是在星期几
 - (NSMutableArray *)currentMonthArray:(NSDate *)date;//获得这个月排布数组
 - (void)changeCurrentMonth:(NSDate *)date andIndex:(int)index resultData:(void(^)(NSDate *nowDate,NSString *showMonth))block;//获得上个月或者下个月的对应的nsdate和字符串
-- (SSLunarDate *)lunarDaysString:(NSDate *)date int:(int)nowIndex;//获取对应的农历
+- (NSString *)lunarDaysString:(NSDate *)date int:(int)nowIndex;//获取对应的农历
 @end

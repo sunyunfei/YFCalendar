@@ -9,7 +9,6 @@
 #import "YFCollectionView.h"
 #import "YFCell.h"
 #import "NSObject+CalenderSet.h"
-#import "SSLunarDate.h"
 @interface YFCollectionView()<UICollectionViewDelegate,UICollectionViewDataSource>
 
 @end
@@ -66,20 +65,17 @@
     if ([dic[@"status"] isEqualToString:@"pre"]) {//上一个月
         [self changeCurrentMonth:_date andIndex:-1 resultData:^(NSDate *nowDate, NSString *showMonth) {
             
-            SSLunarDate *sdate = [weakSelf lunarDaysString:nowDate int:[dic[@"day"] intValue]];
-            lunarStr = [NSString stringWithFormat:@"%@",[sdate dayString]];
+            lunarStr = [weakSelf lunarDaysString:nowDate int:[dic[@"day"] intValue]];
         }];
     }else if ([dic[@"status"] isEqualToString:@"next"]){//下一个月
     
         [self changeCurrentMonth:_date andIndex:1 resultData:^(NSDate *nowDate, NSString *showMonth) {
             
-            SSLunarDate *sdate = [weakSelf lunarDaysString:nowDate int:[dic[@"day"] intValue]];
-            lunarStr = [NSString stringWithFormat:@"%@",[sdate dayString]];
+           lunarStr = [weakSelf lunarDaysString:nowDate int:[dic[@"day"] intValue]];
         }];
     }else{
     
-        SSLunarDate *sdate = [self lunarDaysString:_date int:[dic[@"day"] intValue]];
-        lunarStr = [NSString stringWithFormat:@"%@",[sdate dayString]];
+        lunarStr = [self lunarDaysString:_date int:[dic[@"day"] intValue]];
     }
     cell.lunarLabel.text = lunarStr;
     return cell;
